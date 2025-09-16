@@ -11,13 +11,8 @@ import glob
 import warnings
 import random
 
-try:
-    from prototype_7_mri_model import MRI_Synthesis_Net
-except ImportError:
-    print("Error: Could not import 'MRI_Synthesis_Net'.")
-    print("Please ensure the file 'prototype_7_mri_model.py' is in the same directory.")
-    MRI_Synthesis_Net = lambda **kwargs: nn.Sequential(nn.Conv2d(1, 1, 3, 1, 1), nn.Identity())
 
+from model import MRI_Synthesis_Net
 
 warnings.filterwarnings("ignore", message="The given buffer is not writable, and PyTorch does not support non-writable tensors.")
 
@@ -172,7 +167,7 @@ def generate_contrasts(
     custom_permutations: list = None
 ):
     try:
-        MODEL_PATH = "mri_contrast_generator_prototype_7.pth"
+        MODEL_PATH = "mri_contrast_generator.pth"
         if update_callback: update_callback("Setting up device and model...")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         model = MRI_Synthesis_Net(scale_factor=1, num_hist_bins=num_bins).to(device)
